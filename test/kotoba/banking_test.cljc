@@ -58,3 +58,27 @@
     (is (= "C1" (:clearing/id b)))
     (is (= :pending (:clearing/status b)))
     (is (= "USD" (:clearing/currency b)))))
+
+(deftest iban-edge-cases
+  (testing "lowercase IBAN is normalized and valid"
+    (is (bank/iban-valid? "gb82west12345698765432")))
+  (testing "too short is rejected"
+    (is (not (bank/iban-valid? "GB82WEST")))
+    (is (not (bank/iban-valid? "G1"))))
+  (testing "non-string and empty are rejected"
+    (is (not (bank/iban-valid? nil)))
+    (is (not (bank/iban-valid? ""))))
+  (testing "malformed returns nil parse"
+    (is (nil? (bank/parse-iban "BAD")))))
+
+(deftest ledger-edge-cases
+  (testing "empty entries are balanced (vacuously)"
+    (is (bank/balanced? [])))
+  (testing "multi-currency imbalance is detected per currency"
+    (is (not (bank/balanced? [(bank/entry "A" :debit 100 "USD")
+                              (bank/entry "B" :credit 100 "EUR")]))))
+  (testing "balanced across multiple currencies when each balances"
+    (is (bank/balanced? [(bank/entry "A" :debit 100 "USD")
+                         (bank/entry "B" :credit 100 "USD")
+                         (bank/entry "C" :debit 50 "EUR")
+                         (bank/entry "D" :credit 50 "EUR")]))))

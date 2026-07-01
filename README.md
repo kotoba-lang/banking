@@ -14,6 +14,17 @@ No network, no I/O. Amounts are plain numbers in the smallest unit of the
 account currency (e.g. cents) — no BigDecimal assumption, keeping the
 library portable `.cljc` across JVM / ClojureScript / SCI / GraalVM.
 
+
+## Maturity
+
+| | |
+|---|---|
+| Role | capability |
+| Tests | 53 assertions, all green |
+| Operator console (UI/UX) | yes |
+| Export (CSV/JSON) | yes |
+| Shared CSS design system | yes (css.core/operator-theme) |
+
 ## Contract
 
 ```clojure

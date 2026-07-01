@@ -28,6 +28,38 @@ library portable `.cljc` across JVM / ClojureScript / SCI / GraalVM.
                     (bank/entry "B" :credit  90 "USD")]) ; flagged :ledger/unbalanced
 ```
 
+## Operator console (UI/UX)
+
+A read-only HTML dashboard renders accounts, postings and clearing batches
+for an operator. Built on [`kotoba-lang/html`](https://github.com/kotoba-lang/html)
+(Hiccup→HTML) + [`kotoba-lang/css`](https://github.com/kotoba-lang/css)
+(EDN→CSS). Pure data → markup; the console never exposes a write surface
+(no `<form>`/`<button>`) — writes stay behind the governor.
+
+```clojure
+(require '[kotoba.banking.ui :as ui])
+
+(ui/dashboard
+  {:accounts [(bank/account "A1" "USD" :holder "Acme")]
+   :postings [(bank/posting "P1" [(bank/entry "A" :debit 100 "USD")
+                                  (bank/entry "B" :credit  90 "USD")])]
+   :clearing-batches [(bank/clearing-batch "C1" [])]})
+;; => "<html>...read-only · governor-gated...unbalanced...</html>"
+```
+
+## Export (CSV / JSON)
+
+Audit-grade CSV (RFC-4180 quoting) and JSON (quote/backslash/newline
+escaped) for reconciliation, audit export and downstream reporting.
+
+```clojure
+(require '[kotoba.banking.export :as ex])
+
+(ex/accounts->csv accounts)    ; header + rows, commas quoted
+(ex/postings->csv postings)    ; flags unbalanced postings
+(ex/accounts->json accounts)   ; JSON array
+```
+
 ## Why
 
 A community bank must never commit a posting whose debits and credits do not

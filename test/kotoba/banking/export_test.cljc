@@ -24,6 +24,19 @@
       (is (re-find #"unbalanced" csv))
       (is (re-find #"\d,2,unbalanced" csv)))))
 
+(deftest csv-export-quotes-a-bare-carriage-return
+  ;; RFC 4180 requires quoting a field containing CR, LF, or a comma --
+  ;; \r alone is also a line terminator every standard CSV reader
+  ;; recognizes, but the check here only ever covered \n. Verified
+  ;; against Python's csv module: an unquoted bare \r split the row into
+  ;; two corrupted rows on read-back.
+  (let [p [(bank/posting "P1"
+             [(bank/entry "A1" :debit 100 "USD")
+              (bank/entry "A2" :credit 100 "USD")]
+             :memo (str "refund" (char 13) "note"))]
+        csv (ex/postings->csv p)]
+    (is (str/includes? csv "\"refund\rnote\""))))
+
 (deftest json-export
   (testing "accounts JSON is a non-empty array"
     (let [j (ex/accounts->json accs)]

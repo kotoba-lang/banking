@@ -1,10 +1,12 @@
 (ns kotoba.banking.export
   "Operator-facing export for a community banking actor.
 
-  Renders banking records to CSV and JSON for reconciliation, audit export
-  and downstream reporting. Pure data → text: no network, no I/O. Exports
-  are read-only evidence the audit ledger can append; they never mutate
-  accounts or postings."
+  Renders banking records — and Open Banking (Berlin Group XS2A)
+  payment-initiation / account-information payloads built by
+  kotoba.banking.api — to CSV and JSON for reconciliation, audit export and
+  downstream reporting. Pure data → text: no network, no I/O. Exports are
+  read-only evidence the audit ledger can append; they never mutate
+  accounts, postings or payment-initiation state."
   (:require [clojure.string :as str]
             [clojure.edn :as edn]
             [kotoba.banking :as bank]))
@@ -93,4 +95,54 @@
                         "\"entries\":" (count (:ledger/entries p)) ","
                         "\"status\":\"" (if (:ledger/unbalanced p) "unbalanced" "balanced") "\","
                         "\"memo\":\"" (json-str (:ledger/memo p)) "\"}")))
+       "]"))
+
+;; ---------------------------------------------------------------------------
+;; Open Banking (Berlin Group XS2A) payloads — kotoba.banking.api already
+;; builds these with plain string keys mirroring the real JSON field names
+;; 1:1, so the JSON exports below are a direct serialization, not a remap.
+;; ---------------------------------------------------------------------------
+
+(defn payment-initiations->csv
+  "Export Open Banking (Berlin Group XS2A) payment-initiation 201 response
+  bodies (kotoba.banking.api/payment-initiation-response maps) to CSV."
+  [payment-initiations]
+  (str/join "\n"
+    (cons (csv-row ["paymentId" "transactionStatus"])
+          (for [p payment-initiations]
+            (csv-row [(get p "paymentId") (get p "transactionStatus")])))))
+
+(defn payment-initiations->json
+  "Export Open Banking (Berlin Group XS2A) payment-initiation 201 response
+  bodies to a JSON array."
+  [payment-initiations]
+  (str "["
+       (str/join ","
+                 (for [p payment-initiations]
+                   (str "{\"paymentId\":\"" (json-str (get p "paymentId")) "\","
+                        "\"transactionStatus\":\"" (json-str (get p "transactionStatus")) "\"}")))
+       "]"))
+
+(defn account-details->csv
+  "Export Open Banking (Berlin Group XS2A) accountDetails maps
+  (kotoba.banking.api/account->account-details) to CSV."
+  [accounts-details]
+  (str/join "\n"
+    (cons (csv-row ["resourceId" "iban" "currency" "product" "cashAccountType"])
+          (for [a accounts-details]
+            (csv-row [(get a "resourceId") (get a "iban") (get a "currency")
+                      (get a "product") (get a "cashAccountType")])))))
+
+(defn account-details->json
+  "Export Open Banking (Berlin Group XS2A) accountDetails maps to a JSON
+  array."
+  [accounts-details]
+  (str "["
+       (str/join ","
+                 (for [a accounts-details]
+                   (str "{\"resourceId\":\"" (json-str (get a "resourceId")) "\","
+                        "\"iban\":\"" (json-str (get a "iban")) "\","
+                        "\"currency\":\"" (json-str (get a "currency")) "\","
+                        "\"product\":\"" (json-str (get a "product")) "\","
+                        "\"cashAccountType\":\"" (json-str (get a "cashAccountType")) "\"}")))
        "]"))

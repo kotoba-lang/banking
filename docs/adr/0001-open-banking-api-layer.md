@@ -8,7 +8,7 @@
   with minimal translation work)
 - **Context tags**: banking, open-banking, psd2, xs2a, berlin-group, api,
   cljc
-- **Related**: `90-docs/adr/2607141900-kotoba-banking-open-banking-xs2a-api-layer.md`
+- **Related**: `90-docs/adr/2607142100-kotoba-banking-open-banking-xs2a-api-layer.md`
   (superproject, this ADR's counterpart), `kotoba-lang/swift` (the sibling
   interbank-*messaging* library this repo does NOT duplicate),
   `kotoba-lang/kessai` (the payment-gateway abstraction that already

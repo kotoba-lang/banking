@@ -50,7 +50,7 @@
   only builds and parses the EDN standing in for the real JSON body; a real
   adapter is a follow-up (same discipline as kotoba-lang/kessai's wire
   rail)."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [clojure.edn :as edn]
             [kotoba.banking :as bank]))
 

@@ -10,7 +10,7 @@
   Amounts are plain numbers in the smallest unit of the account currency
   (e.g. cents) — no BigDecimal assumption, keeping the library portable.
   Portable (.cljc) across JVM / ClojureScript / SCI / GraalVM."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ---------------------------------------------------------------------------
 ;; IBAN — International Bank Account Number (ISO 13616)
@@ -20,7 +20,7 @@
 
 (defn- iban-normalize [s]
   (when (string? s)
-    (str/upper-case (str/replace s #"\s+" ""))))
+    (str/upper (str/replace s #"\s+" ""))))
 
 (defn- digit-seq
   "Rearrange IBAN (first 4 chars moved to the end) and expand letters to two

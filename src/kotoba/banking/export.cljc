@@ -7,7 +7,7 @@
   downstream reporting. Pure data → text: no network, no I/O. Exports are
   read-only evidence the audit ledger can append; they never mutate
   accounts, postings or payment-initiation state."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [clojure.edn :as edn]
             [kotoba.banking :as bank]))
 

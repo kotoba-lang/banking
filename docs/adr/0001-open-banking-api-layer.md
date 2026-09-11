@@ -17,7 +17,7 @@
 
 ## Problem
 
-`kotoba-banking` (`src/kotoba/banking.cljc`) modeled internal bookkeeping —
+`kotoba-banking` (`src/kotoba/banking.cljk`) modeled internal bookkeeping —
 IBAN validation, account records, a double-entry ledger, a clearing-batch
 contract — but had no external-facing API/message layer. The
 `cloud-itonami-isic-6493` factoring actor (and any future actor needing
@@ -86,7 +86,7 @@ Sources actually fetched and read (not recalled from training data):
 
 ## Decision
 
-Add `src/kotoba/banking/api.cljc` (`kotoba.banking.api`), a pure `.cljc`
+Add `src/kotoba/banking/api.cljk` (`kotoba.banking.api`), a pure `.cljc`
 namespace (no network, no I/O — same discipline as `kotoba.banking`
 itself) that:
 

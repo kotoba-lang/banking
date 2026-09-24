@@ -51,7 +51,7 @@
   adapter is a follow-up (same discipline as kotoba-lang/kessai's wire
   rail)."
   (:require [kotoba.lang.text :as str]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [kotoba.banking :as bank]))
 
 ;; ---------------------------------------------------------------------------

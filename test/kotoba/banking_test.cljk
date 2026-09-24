@@ -1,5 +1,5 @@
 (ns kotoba.banking-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kotoba.banking :as bank]))
 
 (deftest iban-valid-test

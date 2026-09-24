@@ -1,6 +1,6 @@
 (ns kotoba.banking.export-test
   (:require [kotoba.lang.text :as str]
-            [clojure.test :refer [deftest is testing]]
+            [kotoba.test :refer [deftest is testing]]
             [kotoba.banking :as bank]
             [kotoba.banking.export :as ex]))
 

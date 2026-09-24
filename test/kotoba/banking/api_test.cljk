@@ -3,7 +3,7 @@
   input rejection, and field-name/status-enum verification against the
   Berlin Group NextGenPSD2 XS2A OpenAPI definition v1.3.11 (2021-09-24):
   https://github.com/adorsys/xs2a/blob/develop/xs2a-impl/src/main/resources/static/psd2-api_v1.3.11-2021-10-01v1.yaml"
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kotoba.banking :as bank]
             [kotoba.banking.api :as api]))
 

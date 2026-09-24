@@ -22,6 +22,13 @@
   (when (string? s)
     (str/upper (str/replace s #"\s+" ""))))
 
+(defn- code
+  "The character's code point. `(int c)` is that on the JVM, but on a JS host
+  a character is a one-char string and `(int \\A)` is 0 -- every IBAN then
+  failed mod-97 there (isic-6493's XS2A settlement tests, 2026-09-24)."
+  [c]
+  #?(:clj (int c) :default (.charCodeAt (str c) 0)))
+
 (defn- digit-seq
   "Rearrange IBAN (first 4 chars moved to the end) and expand letters to two
   decimal digits (A->10 ... Z->35), returning a lazy sequence of decimal
@@ -30,13 +37,13 @@
   (let [rearranged (str (subs s 4) (subs s 0 4))]
     (eduction
       (mapcat (fn [c]
-                (let [n (int c)]
+                (let [n (code c)]
                   (cond
-                    (<= (int \A) n (int \Z))
-                    (let [v (+ 10 (- n (int \A)))]
+                    (<= (code \A) n (code \Z))
+                    (let [v (+ 10 (- n (code \A)))]
                       [(quot v 10) (rem v 10)])
-                    (<= (int \0) n (int \9))
-                    [(- n (int \0))]
+                    (<= (code \0) n (code \9))
+                    [(- n (code \0))]
                     :else nil))))
       rearranged)))
 

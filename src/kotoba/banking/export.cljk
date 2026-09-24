@@ -8,7 +8,7 @@
   read-only evidence the audit ledger can append; they never mutate
   accounts, postings or payment-initiation state."
   (:require [kotoba.lang.text :as str]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [kotoba.banking :as bank]))
 
 (defn- csv-cell [v]

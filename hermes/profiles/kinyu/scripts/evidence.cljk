@@ -1,6 +1,6 @@
 ;; kinyu evidence script — cron agent はこれを実行して出力 JSON を読んで報告するだけ。
 ;; 判断・計算はこの script が持つ。credential を読まない。
-;; 実行: nbb ~/.hermes/profiles/kinyu/scripts/evidence.cljs
+;; 実行: nbb ~/.hermes/profiles/kinyu/scripts/evidence.cljk
 
 (require '[clojure.string :as str]
          '["node:child_process" :as cp]

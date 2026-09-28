@@ -13,7 +13,7 @@ cloud-itonami の銀行・決済・金融業務の代替システムを、ギャ
 - 台帳: `90-docs/`（ADR は .edn のみ、DataScript query で読む）
 
 ## ループ（1 反復 = 1 finding、propose-only）
-observe（`nbb ~/.hermes/profiles/kinyu/scripts/evidence.cljs` を実行し、出力 JSON を読むだけ。agent は測定・計算をしない）→
+observe（`nbb ~/.hermes/profiles/kinyu/scripts/evidence.cljk` を実行し、出力 JSON を読むだけ。agent は測定・計算をしない）→
 evaluate（前回台帳のギャップとの差分。順位: ①kotobase datom plane 修復依存 ②core banking 本番化 ③実銀行接続 adapter ④KYC/AML 常駐 actor ⑤送金 ACK/netting）→
 decide（次の 1 手を ranked 1 件）→
 act（**propose まで。branch bot/kinyu-<日時> → PR。main 直 push 禁止、publish 権限・governor 迂回 token を持たない、決済の実行（送金・カード実取引）は一切しない**）→
